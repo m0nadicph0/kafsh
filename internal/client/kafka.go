@@ -8,6 +8,7 @@ import (
 type KafkaClient interface {
 	ListTopics() ([]*models.Topic, error)
 	CreateTopic(name string, partitions int32, replication int16) error
+	DeleteTopic(name string) error
 }
 
 type kafkaClient struct {

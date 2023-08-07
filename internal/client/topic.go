@@ -61,3 +61,22 @@ func (k *kafkaClient) CreateTopic(name string, partitions int32, replication int
 	}
 	return nil
 }
+
+func (k *kafkaClient) DeleteTopic(name string) error {
+	admin, err := sarama.NewClusterAdmin(k.brokers, k.config)
+	if err != nil {
+		return fmt.Errorf("failed to create admin client: %v", err)
+	}
+	defer func() {
+		if err := admin.Close(); err != nil {
+			log.Printf("Error closing admin client: %v", err)
+		}
+	}()
+
+	err = admin.DeleteTopic(name)
+	if err != nil {
+		return fmt.Errorf("failed to delete topic %s: %v", name, err)
+	}
+
+	return nil
+}

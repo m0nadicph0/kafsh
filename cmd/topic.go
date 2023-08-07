@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/m0nadicph0/kafsh/internal/client"
 	"github.com/m0nadicph0/kafsh/internal/printer"
+	"github.com/m0nadicph0/kafsh/internal/util"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -59,15 +60,22 @@ var createCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("created topic %s with partitions=%d, replicas=%d\n", args[0], partitions, replicas)
+		util.Success("created topic %s with partitions=%d, replicas=%d\n", args[0], partitions, replicas)
 		return nil
 	},
 }
 
 var deleteCmd = &cobra.Command{
-	Use:   "delete",
+	Use:   "delete TOPIC",
 	Short: "Delete a topic",
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
+		kCli := client.NewKafkaClient(getKafkaConfig(), []string{"localhost:9092"})
+		err := kCli.DeleteTopic(args[0])
+		if err != nil {
+			return err
+		}
+		util.Success("Deleted topic %s!\n", args[0])
 		return nil
 	},
 }
@@ -78,6 +86,8 @@ func init() {
 	createCmd.Flags().Int32P("partitions", "p", 1, "Number of partitions")
 	createCmd.Flags().Int16P("replicas", "r", 1, "Number of replicas")
 	topicCmd.AddCommand(createCmd)
+
+	topicCmd.AddCommand(deleteCmd)
 
 	rootCmd.AddCommand(topicCmd)
 
