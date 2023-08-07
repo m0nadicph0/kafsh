@@ -16,6 +16,7 @@ const (
 
 type Printer interface {
 	PrintTopics([]*models.Topic)
+	PrintTopicDesc(*models.TopicDesc)
 }
 
 func NewPrinter(t Type, out io.Writer) Printer {

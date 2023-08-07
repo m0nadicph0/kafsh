@@ -30,12 +30,6 @@ var lsCmd = &cobra.Command{
 	},
 }
 
-/*
-add-config  Add config key/value pair to topic
-  delete      Delete a topic
-  describe    Describe topic
-*/
-
 var createCmd = &cobra.Command{
 	Use:   "create TOPIC",
 	Short: "Create a topic",
@@ -80,6 +74,22 @@ var deleteCmd = &cobra.Command{
 	},
 }
 
+var describeCmd = &cobra.Command{
+	Use:   "describe TOPIC",
+	Short: "Describe a topic",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		kCli := client.NewKafkaClient(getKafkaConfig(), []string{"localhost:9092"})
+		topicDesc, err := kCli.DescribeTopic(args[0])
+		if err != nil {
+			return err
+		}
+		printer.NewPrinter(printer.TabPrinter, os.Stdout).PrintTopicDesc(topicDesc)
+
+		return nil
+	},
+}
+
 func init() {
 	topicCmd.AddCommand(lsCmd)
 
@@ -88,6 +98,7 @@ func init() {
 	topicCmd.AddCommand(createCmd)
 
 	topicCmd.AddCommand(deleteCmd)
+	topicCmd.AddCommand(describeCmd)
 
 	rootCmd.AddCommand(topicCmd)
 
