@@ -3,7 +3,9 @@ package commands
 import (
 	"errors"
 	"fmt"
+	"github.com/m0nadicph0/kafsh/internal/cache"
 	"github.com/m0nadicph0/kafsh/internal/client"
+	"github.com/m0nadicph0/kafsh/internal/constants"
 	"github.com/m0nadicph0/kafsh/internal/printer"
 	"github.com/m0nadicph0/kafsh/internal/udf"
 	"github.com/m0nadicph0/kafsh/internal/util"
@@ -29,6 +31,7 @@ func topicsCmd(cli client.KafkaClient, args []string) error {
 		return err
 	}
 
+	cache.Set(constants.CacheKeyTopicNames, util.GetTopicNames(topics))
 	printer.NewPrinter(printer.TabPrinter, os.Stdout).PrintTopics(topics)
 	return nil
 }

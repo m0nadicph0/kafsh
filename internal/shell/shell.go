@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"github.com/buildkite/shellwords"
 	"github.com/chzyer/readline"
+	"github.com/m0nadicph0/kafsh/internal/cache"
 	"github.com/m0nadicph0/kafsh/internal/client"
+	"github.com/m0nadicph0/kafsh/internal/constants"
 	"github.com/m0nadicph0/kafsh/internal/shell/commands"
 	"io"
 	"log"
@@ -13,12 +15,20 @@ import (
 
 const Prompt = "\033[31m»\033[0m "
 
+func listTopicsFromCache(s string) []string {
+	values, ok := cache.Get(constants.CacheKeyTopicNames)
+	if ok {
+		return values
+	}
+	return []string{}
+}
+
 var completer = readline.NewPrefixCompleter(
 	readline.PcItem("topics"),
 	readline.PcItem("topic",
 		readline.PcItem("create"),
-		readline.PcItem("delete"),
-		readline.PcItem("describe"),
+		readline.PcItem("delete", readline.PcItemDynamic(listTopicsFromCache)),
+		readline.PcItem("describe", readline.PcItemDynamic(listTopicsFromCache)),
 		readline.PcItem("ls"),
 	),
 	readline.PcItem("exit"),
