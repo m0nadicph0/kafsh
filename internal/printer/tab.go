@@ -10,6 +10,15 @@ type tabPrinter struct {
 	w *tabwriter.Writer
 }
 
+func (t *tabPrinter) PrintNodes(nodes []*models.Node) {
+	_, _ = fmt.Fprintln(t.w, "ID\tADDRESS\tCONTROLLER\t")
+
+	for _, node := range nodes {
+		_, _ = fmt.Fprintln(t.w, node.ToTSRec())
+	}
+	_ = t.w.Flush()
+}
+
 func (t *tabPrinter) PrintTopicDesc(desc *models.TopicDesc) {
 	fmt.Fprintf(t.w, "Name:\t%v\t\n", desc.Name)
 	fmt.Fprintf(t.w, "Internal:\t%v\t\n", desc.Internal)

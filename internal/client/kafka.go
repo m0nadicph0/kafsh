@@ -10,6 +10,7 @@ type KafkaClient interface {
 	CreateTopic(name string, partitions int32, replication int16) error
 	DeleteTopic(name string) error
 	DescribeTopic(name string) (*models.TopicDesc, error)
+	ListNodes() ([]*models.Node, error)
 }
 
 type kafkaClient struct {

@@ -31,6 +31,10 @@ var completer = readline.NewPrefixCompleter(
 		readline.PcItem("describe", readline.PcItemDynamic(listTopicsFromCache)),
 		readline.PcItem("ls"),
 	),
+	readline.PcItem("nodes"),
+	readline.PcItem("node",
+		readline.PcItem("ls"),
+	),
 	readline.PcItem("exit"),
 )
 
