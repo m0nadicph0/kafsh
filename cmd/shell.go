@@ -8,8 +8,9 @@ import (
 
 // shellCmd represents the shell command
 var shellCmd = &cobra.Command{
-	Use:   "shell",
-	Short: "Start an interactive shell with completions",
+	Use:     "shell",
+	Short:   "Start an interactive shell with completions",
+	Aliases: []string{"sh"},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return shell.Start(client.NewKafkaClient(getKafkaConfig(), []string{"localhost:9092"}))
 	},
