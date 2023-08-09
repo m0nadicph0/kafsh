@@ -10,6 +10,15 @@ type tabPrinter struct {
 	w *tabwriter.Writer
 }
 
+func (t *tabPrinter) PrintGroups(groups []*models.Group) {
+	_, _ = fmt.Fprintln(t.w, "NAME\tSTATE\tCONSUMERS\t")
+
+	for _, group := range groups {
+		_, _ = fmt.Fprintln(t.w, group.ToTSRec())
+	}
+	_ = t.w.Flush()
+}
+
 func (t *tabPrinter) PrintNodes(nodes []*models.Node) {
 	_, _ = fmt.Fprintln(t.w, "ID\tADDRESS\tCONTROLLER\t")
 

@@ -11,6 +11,7 @@ type KafkaClient interface {
 	DeleteTopic(name string) error
 	DescribeTopic(name string) (*models.TopicDesc, error)
 	ListNodes() ([]*models.Node, error)
+	ListGroups() ([]*models.Group, error)
 }
 
 type kafkaClient struct {

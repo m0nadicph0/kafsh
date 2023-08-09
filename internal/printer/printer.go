@@ -18,6 +18,7 @@ type Printer interface {
 	PrintTopics([]*models.Topic)
 	PrintTopicDesc(*models.TopicDesc)
 	PrintNodes([]*models.Node)
+	PrintGroups([]*models.Group)
 }
 
 func NewPrinter(t Type, out io.Writer) Printer {
