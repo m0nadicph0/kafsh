@@ -10,6 +10,14 @@ type tabPrinter struct {
 	w *tabwriter.Writer
 }
 
+func (t *tabPrinter) PrintGroupDescription(group *models.GroupDesc) {
+	fmt.Fprintf(t.w, "Group ID:\t%v\n", group.GroupID)
+	fmt.Fprintf(t.w, "State:\t%v\n", group.State)
+	fmt.Fprintf(t.w, "Protocol:\t%v\n", group.Protocol)
+	fmt.Fprintf(t.w, "Protocol Type:\t%v\n", group.ProtocolType)
+	t.w.Flush()
+}
+
 func (t *tabPrinter) PrintGroups(groups []*models.Group) {
 	_, _ = fmt.Fprintln(t.w, "NAME\tSTATE\tCONSUMERS\t")
 

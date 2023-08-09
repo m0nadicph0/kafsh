@@ -42,6 +42,29 @@ func (k *kafkaClient) ListGroups() ([]*models.Group, error) {
 	return result, nil
 }
 
+func (k *kafkaClient) DescribeGroup(name string) (*models.GroupDesc, error) {
+	admin, err := sarama.NewClusterAdmin(k.brokers, k.config)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create admin client: %v", err)
+	}
+	defer func() {
+		if err := admin.Close(); err != nil {
+			log.Printf("Error closing admin client: %v", err)
+		}
+	}()
+	desc, err := admin.DescribeConsumerGroups([]string{name})
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.GroupDesc{
+		GroupID:      desc[0].GroupId,
+		State:        desc[0].State,
+		Protocol:     desc[0].Protocol,
+		ProtocolType: desc[0].ProtocolType,
+	}, nil
+}
+
 func getGroupNames(m map[string]string) []string {
 	result := make([]string, 0)
 	for name := range m {

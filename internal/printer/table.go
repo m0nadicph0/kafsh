@@ -5,6 +5,11 @@ import "github.com/m0nadicph0/kafsh/internal/models"
 type tablePrinter struct {
 }
 
+func (t *tablePrinter) PrintGroupDescription(group *models.GroupDesc) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (t *tablePrinter) PrintGroups(groups []*models.Group) {
 	//TODO implement me
 	panic("implement me")
