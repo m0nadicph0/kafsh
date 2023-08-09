@@ -17,6 +17,8 @@ var handlerMap = map[string]CmdHandler{
 	"topic":  topicCmd,
 	"nodes":  nodesCmd,
 	"node":   nodeCmd,
+	"groups": groupsCmd,
+	"group":  groupCmd,
 }
 
 func LookUp(cmd string) (CmdHandler, error) {

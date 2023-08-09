@@ -35,6 +35,10 @@ var completer = readline.NewPrefixCompleter(
 	readline.PcItem("node",
 		readline.PcItem("ls"),
 	),
+	readline.PcItem("groups"),
+	readline.PcItem("group",
+		readline.PcItem("ls"),
+	),
 	readline.PcItem("exit"),
 )
 
